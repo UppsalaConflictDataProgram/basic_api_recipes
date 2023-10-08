@@ -1,0 +1,47 @@
+library(httr)
+library(jsonlite)
+library(dplyr)
+
+api_url <- 'https://ucdpapi.pcr.uu.se/api/gedevents/23.1'
+params <- list(
+  pagesize = 1000,
+  page = 0
+)
+
+# Send request to API to get the first page
+response <- GET(api_url, query=params)
+
+# Check if request was successful
+if (http_status(response)$category == "Success") {
+  json_data <- fromJSON(content(response, "text"))
+  
+  # Get the total number of pages
+  total_pages <- json_data$TotalPages
+  
+  # Extract the 'Result' array from the JSON response
+  data <- json_data$Result
+  
+  # Convert JSON data to a dataframe
+  df <- as.data.frame(data)
+  
+  # Iterate through the rest of the pages and append data to the DataFrame
+  for (page in 1:total_pages) {
+    params$page <- page
+    response <- GET(api_url, query=params)
+    json_data <- fromJSON(content(response, "text"))
+    data <- json_data$Result
+    temp_df <- as.data.frame(data)
+    df <- bind_rows(df, temp_df)
+    
+    # Print progress
+    cat(sprintf("Page %d of %d fetched\n", page, total_pages))
+  }
+  
+  # Save the DataFrame to a CSV file
+  write.csv(df, 'ucdp_api_to_dataframe.csv', row.names = FALSE)
+  
+  # Display the dataframe
+  print(df)
+} else {
+  cat(sprintf("Error: %d. %s", response$status_code, content(response, "text")))
+}
