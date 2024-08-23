@@ -11,7 +11,7 @@ The main maintainer of the API is [Stina Högbladh](mailto:stina.hogbladh@pcr.uu
 
 ## Available Jupyter notebooks
 - **UCDP_API2Dataframe**: This code sends a GET request to the UCDP API to retrieve data from a UCDP dataset. It extracts the data from the JSON response and converts it to a Pandas dataframe. Finally, it saves the complete dataframe to a CSV file and prints it to the console.
-- **UCDP_MonthlyCandidateMap**: This code fetches the PRIO-Grids shapefile and reads it into a GeoDataFrame. Then it fetches UCDP Candidate data from the UCDP API and stores the fetched data in a Pandas dataFrame. The fetched data is then filtered and grouped by PRIO-Grids. The code merges the UCDP Candidate data with the PRIO-Grids data and uses the merged data to plot a choropleth map of organized violence at the PRIO-GRID level. The map also shows the natural logarithm of the number of fatalities caused by organized violence. Finally, the code saves the map as a PDF file.
+- **UCDP_Maps**: This code is designed to fetch, process, and visualize data from the Uppsala Conflict Data Program (UCDP). Specifically, it works with either the Georeferenced Event Dataset (GED) or the Candidate Events Dataset. The output is a map that shows the intensity of organized violence, measured by the number of fatalities, at the PRIO-GRID level. If you choose to visualize a GED version, you can also specify which years to cover.
 
 ## Documentation
 For more detailed information on using the API, please refer to the official [UCDP API documentation](https://ucdp.uu.se/apidocs/).
